@@ -25,16 +25,6 @@ class DoublyLinkedList
     root.prev = root
   end
 
-  def append(val)
-    node = Node.new(val)
-
-    node.next, node.prev = root, root.prev
-    root.prev.next, root.prev = node, node
-
-    inc_len
-    node
-  end
-
   def unshift(val)
     move_front(Node.new(val)) if inc_len
   end
@@ -50,6 +40,10 @@ class DoublyLinkedList
   end
 
   def remove_tail
+    remove(root.prev)
+  end
+
+  def remove(node)
     return nil if len.zero?
     isolate(root.prev) if dec_len
   end
@@ -95,6 +89,15 @@ class LRUCache
 
     nodes[key] = list.unshift(KVPair.new(key, value))
     nil
+  end
+
+  def invalidate(key)
+    return nil if nodes[key].nil?
+
+    node = list.remove(nodes[key])
+    nodes.delete(key)
+
+    node.val.value
   end
 
   private

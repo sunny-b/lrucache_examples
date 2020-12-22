@@ -41,24 +41,16 @@ class TestLRUCache < Test::Unit::TestCase
     assert_equal(3, cache.get(:baz))
     assert_equal(1, cache.get(:foo))
   end
+
+  def test_invalidate
+    cache = LRUCache.new(2)
+    assert_equal(nil, cache.invalidate(:foo))
+    cache.set(:foo, 1)
+    assert_equal(1, cache.invalidate(:foo))
+  end
 end
 
 class TestLinkedList < Test::Unit::TestCase
-  def test_append
-    list = DoublyLinkedList.new
-    list.append(1)
-    assert_equal(1, list.send(:root).prev.val)
-    assert_equal(1, list.send(:root).next.val)
-  end
-
-  def test_append_multi
-    list = DoublyLinkedList.new
-    list.append(1)
-    list.append(2)
-    assert_equal(2, list.send(:root).prev.val)
-    assert_equal(1, list.send(:root).next.val)
-  end
-
   def test_unshift
     list = DoublyLinkedList.new
     list.unshift(1)
@@ -74,23 +66,15 @@ class TestLinkedList < Test::Unit::TestCase
     assert_equal(1, list.send(:root).prev.val)
   end
 
-  def test_ordering
-    list = DoublyLinkedList.new
-    list.unshift(1)
-    list.append(2)
-    assert_equal(1, list.send(:root).next.val)
-    assert_equal(2, list.send(:root).prev.val)
-  end
-
   def test_move_front
     list = DoublyLinkedList.new
-    list.append(1)
-    node = list.append(2)
-    assert_equal(1, list.send(:root).next.val)
-    assert_equal(2, list.send(:root).prev.val)
+    node = list.unshift(1)
+    list.unshift(2)
+    assert_equal(2, list.send(:root).next.val)
+    assert_equal(1, list.send(:root).prev.val)
 
     list.move_front(node)
-    assert_equal(1, list.send(:root).prev.val)
-    assert_equal(2, list.send(:root).next.val)
+    assert_equal(2, list.send(:root).prev.val)
+    assert_equal(1, list.send(:root).next.val)
   end
 end
