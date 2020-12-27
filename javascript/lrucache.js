@@ -6,8 +6,8 @@ class KVPair {
 }
 
 class Node {
-  constructor(val) {
-    this.val = val
+  constructor(data) {
+    this.data = data
     this.next = null
     this.prev = null
   }
@@ -38,9 +38,11 @@ class DoublyLinkedList {
     return node
   }
 
-  unshift(val) {
-    this.moveFront(new Node(val))
+  unshift(data) {
+		const node = new Node(data)
+    this.moveFront(node)
     this.incLen()
+		return node
   }
 
   isolate(node) {
@@ -81,19 +83,19 @@ class LRUCache {
     }
 
     this.list.moveFront(node)
-    return node.val.value
+    return node.data.value
   }
 
   set(key, value) {
     const node = this.nodes[key]
     if (node !== undefined) {
-      node.val.value = value
+      node.data.value = value
       return
     }
 
     if (this.list.len === this.maxSize) {
       const expiredNode = this.list.removeTail()
-      delete this.nodes[expiredNode.val.key]
+      delete this.nodes[expiredNode.data.key]
     }
 
     this.nodes[key] = this.list.unshift(new KVPair(key, value))
@@ -105,6 +107,8 @@ class LRUCache {
     const node = this.list.remove(this.nodes[key])
     delete this.nodes[key]
 
-    return node.val.value
+    return node.data.value
   }
 }
+
+module.exports = LRUCache

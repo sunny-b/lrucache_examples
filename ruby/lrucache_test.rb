@@ -54,27 +54,27 @@ class TestLinkedList < Test::Unit::TestCase
   def test_unshift
     list = DoublyLinkedList.new
     list.unshift(1)
-    assert_equal(1, list.send(:root).next.val)
-    assert_equal(1, list.send(:root).prev.val)
+    assert_equal(1, list.send(:root).next.data)
+    assert_equal(1, list.send(:root).prev.data)
   end
 
   def test_unshift_multi
     list = DoublyLinkedList.new
     list.unshift(1)
     list.unshift(2)
-    assert_equal(2, list.send(:root).next.val)
-    assert_equal(1, list.send(:root).prev.val)
+    assert_equal(2, list.send(:root).next.data)
+    assert_equal(1, list.send(:root).prev.data)
   end
 
   def test_move_front
     list = DoublyLinkedList.new
     node = list.unshift(1)
     list.unshift(2)
-    assert_equal(2, list.send(:root).next.val)
-    assert_equal(1, list.send(:root).prev.val)
+    assert_equal(2, list.send(:root).next.data)
+    assert_equal(1, list.send(:root).prev.data)
 
     list.move_front(node)
-    assert_equal(2, list.send(:root).prev.val)
-    assert_equal(1, list.send(:root).next.val)
+    assert_equal(2, list.send(:root).prev.data)
+    assert_equal(1, list.send(:root).next.data)
   end
 end

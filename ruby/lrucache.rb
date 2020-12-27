@@ -7,9 +7,9 @@ class KVPair
 end
 
 class Node
-  attr_accessor :next, :prev, :val
-  def initialize(val)
-    @val = val
+  attr_accessor :next, :prev, :data
+  def initialize(data)
+    @data = data
     @prev = nil
     @next = nil
   end
@@ -25,8 +25,8 @@ class DoublyLinkedList
     root.prev = root
   end
 
-  def unshift(val)
-    move_front(Node.new(val)) if inc_len
+  def unshift(data)
+    move_front(Node.new(data)) if inc_len
   end
 
   def move_front(node)
@@ -45,7 +45,7 @@ class DoublyLinkedList
 
   def remove(node)
     return nil if len.zero?
-    isolate(root.prev) if dec_len
+    isolate(node) if dec_len
   end
 
   def isolate(node)
@@ -72,19 +72,21 @@ class LRUCache
   end
 
   def get(key)
-    nodes[key].val.value if list.move_front(nodes[key])
+    nodes[key].data.value if list.move_front(nodes[key])
   end
 
   def set(key, value)
     node = nodes[key]
     if !node.nil?
-      node.val.value = value
+      node.data.value = value
+      list.move_front(node)
+
       return
     end
 
     if list.len == max_size
       expired_node = list.remove_tail
-      nodes.delete(expired_node.val.key)
+      nodes.delete(expired_node.data.key)
     end
 
     nodes[key] = list.unshift(KVPair.new(key, value))
@@ -97,7 +99,7 @@ class LRUCache
     node = list.remove(nodes[key])
     nodes.delete(key)
 
-    node.val.value
+    node.data.value
   end
 
   private
