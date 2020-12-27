@@ -80,7 +80,6 @@ class LRUCache
     if !node.nil?
       node.data.value = value
       list.move_front(node)
-
       return
     end
 

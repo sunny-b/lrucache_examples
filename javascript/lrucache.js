@@ -89,7 +89,8 @@ class LRUCache {
   set(key, value) {
     const node = this.nodes[key]
     if (node !== undefined) {
-      node.data.value = value
+			node.data.value = value
+			this.list.moveFront(node)
       return
     }
 

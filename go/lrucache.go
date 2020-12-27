@@ -45,6 +45,7 @@ func (l *LRUCache) Set(key string, value interface{}) interface{} {
 		l.mutex.Lock()
 		defer l.mutex.Unlock()
 		node.Value.(*KVPair).value = value
+		l.list.MoveFront(node)
 		return nil
 	}
 
